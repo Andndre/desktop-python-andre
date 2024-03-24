@@ -25,10 +25,11 @@ bot = commands.Bot(command_prefix='!', description=description, intents=intents)
 
 @bot.tree.command(name="brighten", description="Brighten an Image")
 async def brighten(interaction: discord.Interaction, image: discord.Attachment):
+    await interaction.response.defer()
     filename = image.filename
 
     if not check_is_image(image):
-        await interaction.response.send_message("That's not an image!", ephemeral=True)
+        await interaction.followup.send("That's not an image!", ephemeral=True)
 
     image_bytes = io.BytesIO(await image.read())
     img = Image.open(image_bytes)
@@ -37,14 +38,15 @@ async def brighten(interaction: discord.Interaction, image: discord.Attachment):
     with io.BytesIO() as output:
         img.save(output, format="PNG")
         output.seek(0)
-        await interaction.response.send_message(file=discord.File(fp=output, filename=filename))
+        await interaction.followup.send(file=discord.File(fp=output, filename=filename))
 
 @bot.tree.command(name="blur", description="Blur an Image")
 async def blur(interaction: discord.Interaction, image: discord.Attachment, blur: int = 5):
+    await interaction.response.defer()
     filename = image.filename
 
     if not check_is_image(image):
-        await interaction.response.send_message("That's not an image!", ephemeral=True)
+        await interaction.followup.send("That's not an image!", ephemeral=True)
     
     image_bytes = io.BytesIO(await image.read())
     img = Image.open(image_bytes)
@@ -53,14 +55,15 @@ async def blur(interaction: discord.Interaction, image: discord.Attachment, blur
     with io.BytesIO() as output:
         img.save(output, format="PNG")
         output.seek(0)
-        await interaction.response.send_message(file=discord.File(fp=output, filename=filename))
+        await interaction.followup.send(file=discord.File(fp=output, filename=filename))
 
 @bot.tree.command(name="resize", description="Resize an Image")
 async def resize(interaction: discord.Interaction, image: discord.Attachment, width: int, height: int):
+    await interaction.response.defer()
     filename = image.filename
 
     if not check_is_image(image):
-        await interaction.response.send_message("That's not an image!", ephemeral=True)
+        await interaction.followup.send("That's not an image!", ephemeral=True)
 
     image_bytes = io.BytesIO(await image.read())
     img = Image.open(image_bytes)
@@ -69,14 +72,15 @@ async def resize(interaction: discord.Interaction, image: discord.Attachment, wi
     with io.BytesIO() as output:
         img.save(output, format="PNG")
         output.seek(0)
-        await interaction.response.send_message(file=discord.File(fp=output, filename=filename))
+        await interaction.followup.send(file=discord.File(fp=output, filename=filename))
 
 @bot.tree.command(name="blending", description="Blend two images")
 async def blending(interaction: discord.Interaction, image1: discord.Attachment, image2: discord.Attachment, percentage: int = 50):
+    await interaction.response.defer()
     filename = image1.filename
 
     if not check_is_image(image1) or not check_is_image(image2):
-        await interaction.response.send_message("That's not an image!", ephemeral=True)
+        await interaction.followup.send("That's not an image!", ephemeral=True)
     
     image1_bytes = io.BytesIO(await image1.read())
     image2_bytes = io.BytesIO(await image2.read())
@@ -89,17 +93,18 @@ async def blending(interaction: discord.Interaction, image1: discord.Attachment,
     with io.BytesIO() as output:
         img.save(output, format="PNG")
         output.seek(0)
-        await interaction.response.send_message(file=discord.File(fp=output, filename=filename))
+        await interaction.followup.send(file=discord.File(fp=output, filename=filename))
 
 @bot.tree.command(name="giftwo", description="Convert two images into a gif (blink fast!!)")
 async def gif(interaction: discord.Interaction, image1: discord.Attachment, image2: discord.Attachment, duration_per_frame: int = 100):
+    await interaction.response.defer()
+
     if not check_is_image(image1) or not check_is_image(image2):
-        await interaction.response.send_message("That's not an image!", ephemeral=True)
+        await interaction.followup.send("That's not an image!", ephemeral=True)
     
     image1_bytes = io.BytesIO(await image1.read())
     image2_bytes = io.BytesIO(await image2.read())
 
-    await interaction.response.defer()
 
     img1 = Image.open(image1_bytes)
     img2 = Image.open(image2_bytes)
