@@ -115,6 +115,21 @@ async def gifdisolve(interaction: discord.Interaction, image1: discord.Attachmen
 
     await send_gif(interaction, frames, "gif.gif", 15)
 
+@bot.tree.command(name="gifbouncing", description="Bouncing image (gif)")
+@discord.app_commands.describe(image="The image")
+async def gifbouncing(interaction: discord.Interaction, image: discord.Attachment):
+    await interaction.response.defer()
+
+    if not check_is_image(image):
+        await interaction.followup.send("That's not an image!", ephemeral=True)
+        return
+
+    img = await get_pillow_image(image)
+
+    frames = bouncing_image(img)
+
+    await send_gif(interaction, frames, "gif.gif", 15)
+
 
 @bot.event
 async def on_ready():

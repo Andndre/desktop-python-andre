@@ -18,13 +18,14 @@ def squish_image(image: Image.Image, size: tuple[int, int]):
 	return image.resize((width, height), Image.LANCZOS)	
 
 def blend_images(image1: Image.Image, image2: Image.Image, percentage: int):
-	pixels1 = np.array(image1)
-	pixels2 = np.array(image2)
 
 	# If the size of the images are not the same, raise an error
 	if image1.size != image2.size:
-		raise ValueError("The images must have the same size")
+		image2 = squish_image(image2, image1.size)
 
+	pixels1 = np.array(image1)
+	pixels2 = np.array(image2)
+	
 	# Combine the images
 	pixels1 = (pixels1 * (1 - percentage / 100) + pixels2 * (percentage / 100)).astype(np.uint8)
 
