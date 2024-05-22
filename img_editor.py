@@ -38,16 +38,8 @@ def color_balance(image: Image.Image, factor: float):
 	return image
 
 def unsharp_mask(image: Image.Image, factor: float):
-	"""
-	Menyesuaikan kecerahan gambar dengan menambahkan nilai tertentu ke setiap piksel.
-	"""
-	pixels = image.load()
-	for x in range(image.size[0]):
-		for y in range(image.size[1]):
-			# Untuk setiap r g b, tambahkan nilai brightness ke setiap piksel
-			# Pastikan tidak ada nilai negatif dan melebihi 255
-			pixels[x, y] = tuple([max(0, min(255, int(p + p * factor))) for p in pixels[x, y]])
-	return image
+	return image.filter(ImageFilter.UnsharpMask(radius=2, percent=150, threshold=3))
+
 
 def gausian_blur(image: Image.Image, factor: float):
 	"""
@@ -55,14 +47,8 @@ def gausian_blur(image: Image.Image, factor: float):
 	"""
 	return image.filter(ImageFilter.GaussianBlur(factor))
 
-# def motion_blur(image: Image.Image, factor: float):
-# 	"""
-# 	Menyesuaikan kecerahan gambar dengan menambahkan nilai tertentu ke setiap piksel.
-# 	"""
-# 	return image.filter(ImageFilter.MotionBlur(factor))
-
 def edge_detection(image: Image.Image):
 	"""
 	Menyesuaikan kecerahan gambar dengan menambahkan nilai tertentu ke setiap piksel.
 	"""
-	return image.filter(ImageFilter.EDGE_ENHANCE_MORE)
+	return image.filter(ImageFilter.FIND_EDGES)
