@@ -41,7 +41,7 @@ def unsharp_mask(image: Image.Image, factor: float):
 	return image.filter(ImageFilter.UnsharpMask(radius=2, percent=150, threshold=3))
 
 
-def gausian_blur(image: Image.Image, factor: float):
+def gaussian_blur(image: Image.Image, factor: float):
 	"""
 	Menyesuaikan kecerahan gambar dengan menambahkan nilai tertentu ke setiap piksel.
 	"""
