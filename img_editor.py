@@ -30,3 +30,11 @@ def blend_images(image1: Image.Image, image2: Image.Image, percentage: int):
 	pixels1 = (pixels1 * (1 - percentage / 100) + pixels2 * (percentage / 100)).astype(np.uint8)
 
 	return Image.fromarray(pixels1)
+
+def generate_preview(image: Image.Image):
+	preview = image.copy()
+	bg_black = Image.new("RGB", (350, 350), (0, 0, 0))
+	preview.thumbnail((350, 350), Image.LANCZOS)
+	# paste in the middle of the black background
+	bg_black.paste(preview, ((350 - preview.size[0]) // 2, (350 - preview.size[1]) // 2))
+	return bg_black
